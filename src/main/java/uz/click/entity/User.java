@@ -11,6 +11,7 @@ import uz.click.enums.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -18,12 +19,13 @@ public class User {
     private String name;
     private String surname;
     @Column(unique = true, nullable = false)
-    private String email;
+    private String phoneNumber;
     @Column(nullable = false)
     private String password;
     private String code;
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private Boolean isConfirmed;
     private Boolean isActive;
 }

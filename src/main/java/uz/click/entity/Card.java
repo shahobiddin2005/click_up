@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.click.enums.CardType;
 
 @Builder
 @AllArgsConstructor
@@ -15,14 +16,15 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String cardName;
-    private String cardSurname;
+    private String name;
+    private String surname;
     @Column(unique=true, nullable=false)
-    private String cardNumber;
-    private String cardType;
+    private String number;
+    @Enumerated(EnumType.STRING)
+    private CardType type;
     @Column(nullable=false)
-    private String cardExp;
+    private String exp;
     private Double balance = 0.0;
-    private String cardCVV;
-    private String ownerEmail;
+    private String cvv;
+    private String phone;
 }
