@@ -17,7 +17,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="/views/main.css">
+    <link rel="stylesheet" href="/views/app.css">
+    <link rel="stylesheet" href="style.css">
 
     <style>
         .card-container {
@@ -103,59 +104,37 @@
     </style>
 </head>
 <body>
-<nav>
-    <a href="/home" class="logo" style="text-decoration: none">
-        <img src="views/images/logo.png" alt="logo"/>
-        <h1>EASY PAY</h1>
-    </a>
-    <ul>
-        <li>
-            <a href="/home"><i class="fa-solid fa-house"></i> Home</a>
-        </li>
-        <li>
-            <a href="/payment"><i class="fa-regular fa-money-bill-1"></i> Payments</a>
-        </li>
-        <li>
-            <a href="/transfer" class="active_view"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfers</a>
-        </li>
-        <li>
-            <a href="/cards"><i class="fa-regular fa-credit-card"></i> Cards</a>
-        </li>
-        <li>
-            <a href="/monitoring"><i class="fa-solid fa-clock-rotate-left"></i> Monitoring</a>
-        </li>
-        <li>
-            <a href="/settings"><i class="fa-solid fa-gear"></i> Settings</a>
-        </li>
-    </ul>
-    <div class="hamburger">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
+<nav class="navbar">
+    <div class="navbar__container">
+        <a href="/home" id="navbar__logo"> <img src="views/images/logo.png" alt=""/>EASY PAY</a>
+        <div class="navbar__toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+            <li class="navbar__item">
+                <a href="/home" class="navbar__links"><i class="fa-solid fa-house"></i> Home</a>
+            </li>
+            <li  class="navbar__item">
+                <a href="/payment" class="navbar__links"><i class="fa-regular fa-money-bill-1"></i> Payments</a>
+            </li>
+            <li  class="navbar__item">
+                <a href="/transfer" class="navbar__links highlight"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfers</a>
+            </li>
+            <li  class="navbar__item">
+                <a href="/cards" class="navbar__links"><i class="fa-regular fa-credit-card"></i> Cards</a>
+            </li>
+            <li  class="navbar__item">
+                <a href="/monitoring" class="navbar__links"><i class="fa-solid fa-clock-rotate-left"></i> Monitoring</a>
+            </li>
+            <li  class="navbar__item">
+                <a href="/settings" class="navbar__links"><i class="fa-solid fa-gear"></i> Settings</a>
+            </li>
+        </ul>
     </div>
 </nav>
-<div class="menubar">
-    <ul>
-        <li>
-            <a href="/home"><i class="fa-solid fa-house"></i> Home</a>
-        </li>
-        <li>
-            <a href="/payment"><i class="fa-regular fa-money-bill-1"></i> Payments</a>
-        </li>
-        <li>
-            <a href="/transfer" class="active_view"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfers</a>
-        </li>
-        <li>
-            <a href="/cards"><i class="fa-regular fa-credit-card"></i> Cards</a>
-        </li>
-        <li>
-            <a href="/monitoring"><i class="fa-solid fa-clock-rotate-left"></i> Monitoring</a>
-        </li>
-        <li>
-            <a href="/settings"><i class="fa-solid fa-gear"></i> Settings</a>
-        </li>
-    </ul>
-</div>
+
 
 <div class="card-container">
     <form id="card-form" action="/transfer" method="post">
@@ -171,16 +150,7 @@
 
 
 <script>
-    const mobileNav = document.querySelector(".hamburger");
-    const navbar = document.querySelector(".menubar");
-
-    const toggleNav = () => {
-        navbar.classList.toggle("active");
-        mobileNav.classList.toggle("hamburger-active");
-    };
-    mobileNav.addEventListener("click", () => toggleNav());
-
-    // ========================================================================
+        // ========================================================================
     const cardNumberInput = document.getElementById('cardNumber');
     const cardIcon = document.getElementById('card-icon');
     let inputReject = document.getElementById('input_reject_text');
@@ -238,5 +208,7 @@
     });
 
 </script>
+
+<script src="app.js" type="text/javascript"></script>
 </body>
 </html>
