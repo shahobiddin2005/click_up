@@ -197,7 +197,7 @@
                 </div>
                 <div class="card-balance">
                     <label>Balance</label>
-                    <div><c:out value="${card.getBalance()}" /></div>
+                    <div><c:out value="${Math.round(card.getBalance())}" /></div>
                 </div>
             </a>
         </c:forEach>

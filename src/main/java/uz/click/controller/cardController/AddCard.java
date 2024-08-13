@@ -6,10 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import uz.click.entity.Card;
+import uz.click.enums.CardStatus;
 import uz.click.enums.CardType;
 import uz.click.repository.CardRepository;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,13 +50,26 @@ public class AddCard extends HttpServlet {
             card.setType(CardType.HUMO);
         } else if (number.startsWith("8600") || number.startsWith("5614")) {
             card.setType(CardType.UZCARD);
-        }else if (number.startsWith("5")) {
+        } else if (number.startsWith("5")) {
             card.setType(CardType.MASTERCARD);
-        }else if (number.startsWith("4")) {
+        } else if (number.startsWith("4")) {
             card.setType(CardType.VISA);
-        }else {
+        } else {
             req.setAttribute("cardExists", true);
             req.setAttribute("message", "Card type not detected!");
+            req.getRequestDispatcher("/views/cards/add_card.jsp").forward(req, resp);
+            return;
+        }
+
+        String[] split = exp.split("/");
+        if (LocalDate.now().getYear() < Integer.parseInt(split[1]) ||
+                LocalDate.now().getYear() == Integer.parseInt(split[1]) && LocalDate.now().getMonth().getValue() < Integer.parseInt(split[0])) {
+            card.setStatus(CardStatus.EXPIRED);
+        }else card.setStatus(CardStatus.ACTIVE);
+
+        if (card.getStatus().equals(CardStatus.EXPIRED)) {
+            req.setAttribute("cardExists", true);
+            req.setAttribute("message", "This card is expired");
             req.getRequestDispatcher("/views/cards/add_card.jsp").forward(req, resp);
             return;
         }
@@ -62,6 +77,7 @@ public class AddCard extends HttpServlet {
         Optional<Card> any = cardRepository.getCards().stream().filter((card1 -> {
             return Objects.equals(card1.getNumber(), number);
         })).findAny();
+
         if (any.isPresent()) {
             req.setAttribute("cardExists", true);
             req.setAttribute("message", "This card already exists");

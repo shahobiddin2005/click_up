@@ -22,7 +22,7 @@
 
     <style>
         .card-container {
-            width: 410px;
+            width: 450px;
             margin: 50px auto;
             background-color: #fff;
             padding: 20px 40px;
@@ -42,7 +42,19 @@
             font-weight: bold;
         }
 
-        .card-input #cardNumber {
+        .card-input .input {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-align: center;
+            letter-spacing: 2px;
+            text-combine: none;
+        }
+
+        #card-form #sender {
             width: 100%;
             padding: 10px;
             font-size: 18px;
@@ -60,6 +72,7 @@
             outline: none;
             box-shadow: 0 0 5px rgba(255, 10, 10, 0.8);
         }
+
         </c:if>
 
         .card-input input:focus {
@@ -116,19 +129,20 @@
             <li class="navbar__item">
                 <a href="/home" class="navbar__links"><i class="fa-solid fa-house"></i> Home</a>
             </li>
-            <li  class="navbar__item">
+            <li class="navbar__item">
                 <a href="/payment" class="navbar__links"><i class="fa-regular fa-money-bill-1"></i> Payments</a>
             </li>
-            <li  class="navbar__item">
-                <a href="/transfer" class="navbar__links highlight"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfers</a>
+            <li class="navbar__item">
+                <a href="/transfer" class="navbar__links highlight"><i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    Transfers</a>
             </li>
-            <li  class="navbar__item">
+            <li class="navbar__item">
                 <a href="/cards" class="navbar__links"><i class="fa-regular fa-credit-card"></i> Cards</a>
             </li>
-            <li  class="navbar__item">
+            <li class="navbar__item">
                 <a href="/monitoring" class="navbar__links"><i class="fa-solid fa-clock-rotate-left"></i> Monitoring</a>
             </li>
-            <li  class="navbar__item">
+            <li class="navbar__item">
                 <a href="/settings" class="navbar__links"><i class="fa-solid fa-gear"></i> Settings</a>
             </li>
         </ul>
@@ -140,27 +154,67 @@
     <form id="card-form" action="/transfer" method="post">
         <div class="card-input">
             <label for="cardNumber">Card Number</label>
-            <input type="text" id="cardNumber" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
+            <input class="input" type="text" name="cardNumber" id="cardNumber" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required>
             <div id="card-icon"></div>
         </div>
         <p id="input_reject_text" style="color: red; transform: translateY(-70%); padding: 0; margin: 0;"></p>
+        <c:if test="${cardNotFound}">
+            <p id="card_reject_text" style="color: red; transform: translateY(-50%); padding: 0; margin: 0;">${message}</p>
+        </c:if>
+
+        <div class="card-input">
+            <label for="sender">Choose your card</label>
+            <select class="input" name="sender" id="sender" required>
+                <option selected value=""></option>
+                <c:forEach var="card" items="${cards}">
+                    <option value="${card.getNumber()}">
+                            ${card.getNumber().substring(0, 4)} **** ${card.getNumber().substring(12, 16)} | $${Math.round(card.getBalance())}
+                    </option>
+                </c:forEach>
+            </select>
+        </div>
+        <p id="select_reject_text" style="color: red;  transform: translateY(-50%); padding: 0; margin: 0;"></p>
+
+        <div class="card-input">
+            <label for="cardNumber">Enter amount</label>
+            <input class="input" type="number" id="amount" name="amount" placeholder="Amount" required>
+        </div>
+        <c:if test="${amountReject}">
+            <p id="amount_reject_text" style="color: red; transform: translateY(-50%); padding: 0; margin: 0;">${message}</p>
+        </c:if>
+        <div class="card-input">
+            <label for="cardNumber">Enter Description</label>
+            <textarea class="input" style="resize: none" rows="3" id="description" name="description" placeholder="Description"></textarea>
+        </div>
+
         <button type="submit" id="transfer_button">Transfer</button>
     </form>
 </div>
 
 
 <script>
-        // ========================================================================
+    // ========================================================================
     const cardNumberInput = document.getElementById('cardNumber');
     const cardIcon = document.getElementById('card-icon');
     let inputReject = document.getElementById('input_reject_text');
+    let selectReject = document.getElementById('select_reject_text');
 
     cardNumberInput.addEventListener('input', formatCardNumber);
 
     cardNumberInput.addEventListener("focus", function () {
         inputReject.textContent = ""
+        document.getElementById("card_reject_text").textContent = ""
         cardNumberInput.classList.remove("input_reject")
-    })
+    });
+
+    document.getElementById("sender").addEventListener("focus", function () {
+        selectReject.textContent = ""
+        document.getElementById("sender").classList.remove("input_reject")
+    });
+    document.getElementById("amount").addEventListener("focus", function () {
+        document.getElementById("amount_reject_text").textContent = ""
+        document.getElementById("amount").classList.remove("input_reject")
+    });
 
     function formatCardNumber(event) {
         let input = event.target.value.replace(/\D/g, '').substring(0, 16); // Limit to 16 digits and remove non-digits
@@ -196,6 +250,7 @@
         event.preventDefault();
 
         let cardNumber = document.getElementById('cardNumber');
+        let senderNumber = document.getElementById('sender');
 
         if (cardNumber.value.length !== 19) {
             inputReject.textContent = "Card number must be 16 digits long!"
@@ -203,9 +258,16 @@
             return;
         }
 
-        cardNumber = cardNumber.toString().replaceAll(" ", "");
+        if (senderNumber.value === cardNumber.value){
+            selectReject.textContent = "It is not possible to transfer money between the same cards!"
+            senderNumber.classList.add("input_reject")
+            return;
+        }
+
         this.submit();
     });
+
+
 
 </script>
 

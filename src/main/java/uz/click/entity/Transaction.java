@@ -5,13 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.click.enums.TransactionStatus;
 import uz.click.enums.TransactionType;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Locale;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +23,8 @@ public class Transaction {
     private Double amount;
     private String receiver;
     private String sender;
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionType type;

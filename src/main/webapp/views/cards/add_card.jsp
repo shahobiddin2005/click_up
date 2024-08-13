@@ -174,7 +174,7 @@
             <input type="text" id="phone" name="phone" maxlength="19" placeholder="+XXX (XX) XXX XX XX" oninput="formatPhoneNumber(this)" required>
         </div>
 
-        <button type="submit" id="transfer_button">Transfer</button>
+        <button type="submit">Submit</button>
     </form>
 </div>
 
@@ -231,20 +231,12 @@
         const first4Digit = number.substring(0, 4);
 
          if (first4Digit === '8600' || first4Digit === '5614') {
-             document.getElementById("cvv-div").classList.add("display-none")
-             document.getElementById("cvv").setAttribute("required", false)
              icon = '../views/images/uzcard.png'; // Path to Uzcard logo
         } else if (first4Digit === '9860') {
-             document.getElementById("cvv-div").classList.add("display-none")
-             document.getElementById("cvv").setAttribute("required", false)
             icon = '../views/images/humo.png'; // Path to Humo logo
         } else if (firstDigit === '4') {
-             document.getElementById("cvv-div").classList.remove("display-none")
-             document.getElementById("cvv").setAttribute("required", true)
              icon = '../views/images/visa.png'; // Path to Visa logo
         } else if (firstDigit === '5') {
-             document.getElementById("cvv-div").classList.remove("display-none")
-             document.getElementById("cvv").setAttribute("required", true)
             icon = '../views/images/mastercard.png'; // Path to Mastercard logo
         } else {
             icon = ''; // Default or empty if not recognized
@@ -266,10 +258,6 @@
         }
         if (expDate.value.length !== 5) {
             expDate.classList.add("input_reject")
-            return;
-        }
-        if (cvvNum.value.length !== 3) {
-            cvvNum.classList.add("input_reject")
             return;
         }
         if (phoneNum.value.length !== 19) {
@@ -315,6 +303,7 @@
         input.value = formattedNumber;
     }
 </script>
-<script src="app.js" type="text/javascript"></script>
+
+<script  src="../../app.js" type="text/javascript"></script>
 </body>
 </html>
