@@ -1,10 +1,11 @@
-package uz.click.controller.cardController;
+package uz.click.controller.cardControllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import uz.click.config.Context;
 import uz.click.entity.Card;
 import uz.click.enums.CardStatus;
 import uz.click.enums.CardType;
@@ -29,13 +30,12 @@ public class AddCard extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String number = req.getParameter("number");
+        String number = req.getParameter("number").replace(" ", "");
         String surname = req.getParameter("surname");
         String name = req.getParameter("name");
         String exp = req.getParameter("exp");
         String cvv = req.getParameter("cvv");
         Double balance = Double.parseDouble(req.getParameter("balance"));
-        String phone = req.getParameter("phone");
         Card card = Card.builder()
                 .balance(balance)
                 .cvv(cvv)
@@ -43,7 +43,7 @@ public class AddCard extends HttpServlet {
                 .name(name)
                 .number(number)
                 .surname(surname)
-                .phone(phoneFormat(phone))
+                .phone(Context.getUser().getPhoneNumber())
                 .build();
 
         if (number.startsWith("9860")) {

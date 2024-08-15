@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import uz.click.config.Context;
 import uz.click.entity.Card;
 import uz.click.entity.Transaction;
 import uz.click.enums.TransactionStatus;
@@ -26,7 +27,7 @@ public class TransferController extends HttpServlet {
         req.setAttribute("amountReject", false);
         req.setAttribute("cardNotFound", false);
         req.setAttribute("message", "");
-        req.setAttribute("cards", cardRepository.getCards());
+        req.setAttribute("cards", cardRepository.getCardsByUser(Context.getUser()));
         req.getRequestDispatcher("/views/transfer.jsp").forward(req, resp);
     }
 
@@ -77,7 +78,6 @@ public class TransferController extends HttpServlet {
         transaction.setReceiver(card.getNumber());
         transaction.setAmount(amount);
         transaction.setStatus(TransactionStatus.COMPLETED);
-        transaction.setDate(new Timestamp(System.currentTimeMillis()));
         transaction.setType(TransactionType.TRANSFER);
         transaction.setDescription(description);
 
@@ -85,8 +85,8 @@ public class TransferController extends HttpServlet {
         senderCard.setBalance(senderCard.getBalance() - amount);
 
         transactionRepository.save(transaction);
-        cardRepository.update(card);
-        cardRepository.update(senderCard);
+        cardRepository.save(card);
+        cardRepository.save(senderCard);
 
         req.setAttribute("success", true);
         req.setAttribute("transaction", transaction);

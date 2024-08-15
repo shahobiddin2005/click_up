@@ -1,7 +1,12 @@
 package uz.click.enums;
 
 public enum TransactionType {
-    PAYMENT,
+    UZMOBILE,
+    BEELINE,
+    UCELL,
+    MOBIUZ,
+    OQ,
+    HUMANS,
     TRANSFER,
     DEPOSITE
 }

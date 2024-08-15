@@ -30,6 +30,13 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
+        @media screen and (max-width: 480px) {
+            .card-container {
+                width: 90%;
+                padding: 20px 10px;
+            }
+        }
+
         .card-input {
             position: relative;
             margin-bottom: 20px;

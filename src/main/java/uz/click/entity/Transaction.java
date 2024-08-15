@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import uz.click.enums.TransactionStatus;
 import uz.click.enums.TransactionType;
 
@@ -19,6 +20,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String description;
+    @CreationTimestamp
     private Timestamp date;
     private Double amount;
     private String receiver;

@@ -1,10 +1,13 @@
 package uz.click.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import lombok.Cleanup;
 import uz.click.config.Configuration;
 import uz.click.entity.Card;
+import uz.click.entity.Transaction;
+import uz.click.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,18 +18,10 @@ public class CardRepository {
         EntityManager entityManager = Configuration.getEntityManagerFactory().createEntityManager();
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(card);
-        } finally {
-            entityManager.getTransaction().commit();
-        }
-    }
-
-    public void update(Card card) {
-        @Cleanup
-        EntityManager entityManager = Configuration.getEntityManagerFactory().createEntityManager();
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.merge(card);
+            if (card.getId() == null)
+                entityManager.persist(card);
+            else
+                entityManager.merge(card);
         } finally {
             entityManager.getTransaction().commit();
         }
@@ -39,6 +34,21 @@ public class CardRepository {
         try {
             entityManager.getTransaction().begin();
             cards = (List<Card>) entityManager.createQuery("SELECT c FROM Card c").getResultList();
+        } finally {
+            entityManager.getTransaction().commit();
+        }
+        return cards;
+    }
+
+    public List<Card> getCardsByUser(User user) {
+        @Cleanup
+        EntityManager entityManager = Configuration.getEntityManagerFactory().createEntityManager();
+        List<Card> cards;
+        try {
+            entityManager.getTransaction().begin();
+            Query query = entityManager.createNativeQuery("SELECT * FROM card where phone = :phone", Card.class);
+            query.setParameter("phone", user.getPhoneNumber());
+            cards = (List<Card>) query.getResultList();
         } finally {
             entityManager.getTransaction().commit();
         }

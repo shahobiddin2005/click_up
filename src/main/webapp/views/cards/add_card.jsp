@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>EASY PAY | Add card</title>
@@ -169,11 +170,6 @@
             <input type="text" id="cvv" name="cvv" maxlength="3" placeholder="XXX">
         </div>
 
-        <div class="card-input">
-            <label for="phone">Enter phone number</label>
-            <input type="text" id="phone" name="phone" maxlength="19" placeholder="+XXX (XX) XXX XX XX" oninput="formatPhoneNumber(this)" required>
-        </div>
-
         <button type="submit">Submit</button>
     </form>
 </div>
@@ -186,7 +182,6 @@
     let inputReject = document.getElementById('input_reject_text');
     let expDate = document.getElementById('exp');
     let cvvNum = document.getElementById('cvv');
-    let phoneNum = document.getElementById('phone');
 
     cardNumberInput.addEventListener('input', formatCardNumber);
 
@@ -200,9 +195,6 @@
     })
     cvvNum.addEventListener("focus", function () {
         cvvNum.classList.remove("input_reject")
-    })
-    phoneNum.addEventListener("focus", function () {
-        phoneNum.classList.remove("input_reject")
     })
 
     function formatCardNumber(event) {
@@ -260,48 +252,9 @@
             expDate.classList.add("input_reject")
             return;
         }
-        if (phoneNum.value.length !== 19) {
-            phoneNum.classList.add("input_reject")
-            return;
-        }
 
         this.submit();
     });
-    function formatPhoneNumber(input) {
-        const value = input.value.replace(/\D/g, ''); // Remove all non-digit characters
-        let formattedNumber = '';
-
-        if (value.length > 0) {
-            formattedNumber += '+';
-        }
-        if (value.length > 3) {
-            formattedNumber += value.substring(0, 3) + ' ';
-        } else {
-            formattedNumber += value.substring(0, 3);
-        }
-        if (value.length > 5) {
-            formattedNumber += '(' + value.substring(3, 5) + ') ';
-        } else if (value.length > 3) {
-            formattedNumber += '(' + value.substring(3, 5);
-        }
-        if (value.length > 8) {
-            formattedNumber += value.substring(5, 8) + ' ';
-        } else if (value.length > 5) {
-            formattedNumber += value.substring(5, 8);
-        }
-        if (value.length > 10) {
-            formattedNumber += value.substring(8, 10) + ' ';
-        } else if (value.length > 8) {
-            formattedNumber += value.substring(8, 10);
-        }
-        if (value.length > 12) {
-            formattedNumber += value.substring(10, 12);
-        } else if (value.length > 10) {
-            formattedNumber += value.substring(10, 12);
-        }
-
-        input.value = formattedNumber;
-    }
 </script>
 
 <script  src="../../app.js" type="text/javascript"></script>
