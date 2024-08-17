@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import uz.click.config.Context;
 import uz.click.entity.Transaction;
 import uz.click.repository.CardRepository;
 
@@ -28,7 +29,7 @@ public class PaymentsController extends HttpServlet {
         switch (type) {
             case "mobilePay": {
                 if (where != null && where.equals("toMobile")){
-                    req.setAttribute("cards", cardRepository.getCards());
+                    req.setAttribute("cards", cardRepository.getCardsByUser(Context.getUser()));
                     req.setAttribute("phone", req.getParameter("phone"));
                     req.setAttribute("amount", req.getParameter("amount"));
                     req.getRequestDispatcher("/views/mobilePay.jsp").forward(req, resp);

@@ -192,18 +192,24 @@
                 <p>${transactions.get(0).getType().toString()}</p>
                 <p>${transactions.get(0).getAmount()}</p>
             </a>
-            <a href="/monitoring" class="transaction">
-                <p>${transactions.get(1).getType().toString()}</p>
-                <p>${transactions.get(1).getAmount()}</p>
-            </a>
-            <a href="/monitoring" class="transaction">
-                <p>${transactions.get(2).getType().toString()}</p>
-                <p>${transactions.get(2).getAmount()}</p>
-            </a>
-            <a href="/monitoring" class="transaction">
-                <p>${transactions.get(3).getType().toString()}</p>
-                <p>${transactions.get(3).getAmount()}</p>
-            </a>
+            <c:if test="${transactions.size() >= 2}">
+                <a href="/monitoring" class="transaction">
+                    <p>${transactions.get(1).getType().toString()}</p>
+                    <p>${transactions.get(1).getAmount()}</p>
+                </a>
+            </c:if>
+            <c:if test="${transactions.size() >= 3}">
+                <a href="/monitoring" class="transaction">
+                    <p>${transactions.get(2).getType().toString()}</p>
+                    <p>${transactions.get(2).getAmount()}</p>
+                </a>
+            </c:if>
+            <c:if test="${transactions.size() >= 4}">
+                <a href="/monitoring" class="transaction">
+                    <p>${transactions.get(3).getType().toString()}</p>
+                    <p>${transactions.get(3).getAmount()}</p>
+                </a>
+            </c:if>
         </div>
     </c:if>
 </div>

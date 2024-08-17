@@ -56,7 +56,6 @@ public class TransactionRepository {
                     }
                 }
                 if (found) {
-                    transaction.setAmount(-transaction.getAmount());
                     found = false;
                 }
             }

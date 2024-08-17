@@ -23,6 +23,7 @@ public class MonitoringController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         if (id == null) {
+            req.setAttribute("cards", cardRepository.getCardsByUser(Context.getUser()));
             req.setAttribute("transactions", transactionRepository.getTransactionsByUser(Context.getUser()));
             req.getRequestDispatcher("/views/monitoring.jsp").forward(req, resp);
         } else {
